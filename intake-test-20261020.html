@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>Plugin Discovery — isolated intake verification</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="shell">
+  <header class="masthead">
+    <div class="eyebrow">PLUGIN DISCOVERY — TEMPORARY TEST PAGE</div>
+    <h1>Verify the private request system</h1>
+    <p class="intro">This isolated page checks Cloudflare Turnstile and the private intake backend. It does not replace the public publisher request form.</p>
+  </header>
+  <section class="panel">
+    <p class="notice"><strong>Test only.</strong> Do not enter real personal or publisher information. This page sends a fixed, fabricated test request and stores it in the private intake database for verification. No email is sent. The existing public form remains available separately.</p>
+    <form id="intake-test-form">
+      <div id="turnstile-widget" data-sitekey="0x4AAAAAAFdTg-BJUAly3QgW" data-action="listing_request"></div>
+      <p class="hint">Complete verification if asked. Press the button once; requests are rate-limited.</p>
+      <p id="submission-status" role="status" aria-live="polite">Waiting for Turnstile…</p>
+      <button id="test-submit" type="submit" disabled>Send fabricated test request</button>
+    </form>
+    <p class="hint">Successful result: a case ID. An unsuccessful result doesn't confirm request delivery. This temporary page will be removed after validation.</p>
+  </section>
+  <footer>
+    <span>Plugin Discovery — isolated integration test</span>
+  </footer>
+</main>
+<script src="intake-test-20261020.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=onIntakeTestTurnstileReady" async defer></script>
+</body>
+</html>
