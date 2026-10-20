@@ -18,6 +18,10 @@ textarea{min-height:152px;resize:vertical}
 input:focus,textarea:focus,select:focus,button:focus-visible{outline:3px solid #9bc9f7;outline-offset:2px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
 .hint{font-size:.87rem;color:#566778;margin:7px 0 18px}
+.catalog-suggestions[hidden]{display:none}
+.catalog-suggestions{border:1px solid #bfcbd6;border-radius:8px;max-height:240px;overflow-y:auto;margin-top:5px;padding:4px;background:white;box-shadow:0 4px 14px #1f29371a}
+button.catalog-suggestion{display:block;width:100%;background:#fff;color:#1c2933;text-align:left;padding:11px 13px;font-weight:500;min-height:44px;border-radius:5px;overflow-wrap:anywhere}
+button.catalog-suggestion:hover,button.catalog-suggestion:focus-visible{background:#eaf2fc;color:#103d69}
 button{border:0;background:#195da5;color:white;font:inherit;font-weight:700;padding:13px 23px;border-radius:9px;cursor:pointer;min-height:48px}
 button:hover{background:#11477e}
 footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;color:#5d6e7d;font-size:.81rem;padding:25px 5px}
