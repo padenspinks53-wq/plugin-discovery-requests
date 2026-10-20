@@ -1,18 +1,36 @@
-// Staged replacement form: not included by the deployed index.html.
-// Fill the verified HTTPS Worker URL before activating and removing the legacy form.
-const ENDPOINT = 'REPLACE_WITH_CONFIRMED_HTTPS_WORKER_SUBMIT_URL';
+// Staged replacement form. The deployed index.html still uses FormSubmit.
+const ENDPOINT = 'https://plugin-discovery-intake.padenspinks53.workers.dev/submit';
 const form = document.querySelector('#listing-request-form');
 const status = document.querySelector('#submission-status');
+const widget = document.querySelector('#turnstile-widget');
+let widgetId = null;
+
+// Called by Cloudflare Turnstile's explicit-render script after this file loads.
+// Keep the widget ID so reset and getResponse always target this particular form.
+window.onListingRequestTurnstileReady = () => {
+  if (!widget || !window.turnstile) return;
+  widgetId = window.turnstile.render('#turnstile-widget', {
+    sitekey: widget.dataset.sitekey,
+    action: widget.dataset.action
+  });
+};
+function resetWidget() {
+  if (widgetId !== null && window.turnstile) {
+    window.turnstile.reset(widgetId);
+  }
+}
+
 form?.addEventListener('submit', async event => {
   event.preventDefault();
   const submitButton = form.querySelector('button[type="submit"]');
-  if (!ENDPOINT.startsWith('https://') || ENDPOINT.includes('REPLACE_')) {
-    status.textContent = 'This preview is not configured. Please use the existing published form.';
+  if (!window.turnstile || widgetId === null) {
+    status.textContent = 'Verification is still loading. Please try again shortly.';
     return;
   }
   const formData = new FormData(form);
   const payload = Object.fromEntries(formData);
-  payload.turnstile_token = String(formData.get('cf-turnstile-response') || '');
+  // Siteverify must happen only in our Cloudflare Worker, not in the browser.
+  payload.turnstile_token = window.turnstile.getResponse(widgetId) || '';
   delete payload['cf-turnstile-response'];
   if (!payload.turnstile_token) {
     status.textContent = 'Complete the verification challenge before submitting.';
@@ -34,17 +52,15 @@ form?.addEventListener('submit', async event => {
       } else {
         status.textContent = 'Your request was not received. Please try again later.';
       }
-      window.turnstile?.reset();
       return;
     }
     status.textContent = 'Request received. Case ID: ' + result.case_id
       + '. Save this number for follow-up. Changes require review.';
     form.reset();
-    window.turnstile?.reset();
   } catch {
     status.textContent = 'Request delivery failed. Please try again later.';
-    window.turnstile?.reset();
   } finally {
+    resetWidget(); // Turnstile tokens expire and are single-use.
     submitButton.disabled = false;
   }
 });

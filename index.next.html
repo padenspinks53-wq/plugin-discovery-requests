@@ -55,7 +55,7 @@
       </div>
       <p class="hint">For a removal or ownership-sensitive change, we may ask you to verify you represent the publisher. Do not include passwords, identity documents, or other sensitive information.</p>
       <p class="hint">Requests are stored in a protected Plugin Discovery review queue; an AI triage system may help categorize requests, but changes require operator review. <a href="privacy.next.html">Read how requests are handled</a>.</p>
-      <div class="cf-turnstile" data-sitekey="REPLACE_WITH_TURNSTILE_PUBLIC_SITE_KEY"></div>
+      <div id="turnstile-widget" data-sitekey="0x4AAAAAAFdTg-BJUAly3QgW" data-action="listing_request"></div>
       <p id="submission-status" role="status" aria-live="polite"></p>
       <button type="submit">Submit request</button>
     </form>
@@ -65,7 +65,7 @@
     <span>For corrections, additions or removals, use the request form above.</span>
   </footer>
 </main>
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <script type="module" src="request.next.js"></script>
+  <script src="request.next.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=onListingRequestTurnstileReady" async defer></script>
 </body>
 </html>
