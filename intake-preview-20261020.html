@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="Request an addition, correction, updated description, or removal in Plugin Discovery.">
+  <title>TEST PREVIEW — Publisher Requests — Plugin Discovery</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="shell">
+  <header class="masthead">
+    <div class="eyebrow">PLUGIN DISCOVERY · TEMPORARY FULL-FORM TEST</div>
+    <h1>Test the complete request form</h1>
+    <p class="intro">Developers and publishers can ask us to correct, update, add, or remove a plugin listing in Plugin Discovery.</p>
+  </header>
+  <section class="panel">
+    <p class="notice"><strong>TEST MODE — not the live form.</strong> Please use fictional contact details and write TEST in your request. This form submits to our real private intake database to verify the full user experience; submissions do not change any catalog listings. The existing public form remains unchanged. Plugin Discovery is independent of OpenAI and MCPTop.</p>
+    <form id="listing-request-form" method="POST" accept-charset="UTF-8">
+      <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <div class="field">
+        <label for="request_type">What would you like to do? <span class="req">*</span></label>
+        <select id="request_type" name="request_type" required>
+          <option value="" selected disabled>Select a request type</option>
+          <option value="Remove a listing">Remove a listing</option>
+          <option value="Correct listing information">Correct listing information</option>
+          <option value="Update developer description">Update developer description</option>
+          <option value="Suggest missing plugin">Suggest a missing plugin</option>
+          <option value="Other publisher question">Other publisher question</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="plugin_name">Plugin name <span class="req">*</span></label>
+        <input id="plugin_name" name="plugin_name" type="text" maxlength="200" autocomplete="off" required placeholder="Name as shown in ChatGPT">
+      </div>
+      <div class="field">
+        <label for="listing_url">Official ChatGPT listing URL or plugin ID</label>
+        <input id="listing_url" name="listing_url_or_id" type="text" maxlength="320" placeholder="https://chatgpt.com/plugins/…">
+        <p class="hint">Include this if the plugin is already listed. It helps us distinguish plugins with similar names.</p>
+      </div>
+      <div class="grid">
+        <div class="field">
+          <label for="contact_name">Your name or organization <span class="req">*</span></label>
+          <input id="contact_name" name="contact_name" type="text" maxlength="160" required autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="email">Contact email <span class="req">*</span></label>
+          <input id="email" name="email" type="email" maxlength="254" required autocomplete="email" placeholder="you@example.com">
+        </div>
+      </div>
+      <div class="field">
+        <label for="details">What needs to change? <span class="req">*</span></label>
+        <textarea id="details" name="request_details" rows="7" minlength="10" maxlength="4000" required placeholder="Describe the incorrect information or request. For an update, include the proposed description and where we can verify it."></textarea>
+      </div>
+      <p class="hint">For a removal or ownership-sensitive change, we may ask you to verify you represent the publisher. Do not include passwords, identity documents, or other sensitive information.</p>
+      <p class="hint">Requests are stored in a protected Plugin Discovery review queue; an AI triage system may help categorize requests, but changes require operator review. <a href="intake-privacy-20261020.html">Read how requests are handled</a>.</p>
+      <div id="turnstile-widget" data-sitekey="0x4AAAAAAFdTg-BJUAly3QgW" data-action="listing_request"></div>
+      <p id="submission-status" role="status" aria-live="polite"></p>
+      <button type="submit">Submit request</button>
+    </form>
+  </section>
+  <footer>
+    <span>Plugin Discovery — independent third-party plugin search</span>
+    <span>For corrections, additions or removals, use the request form above.</span>
+  </footer>
+</main>
+  <script src="intake-preview-20261020.js"></script>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=onListingRequestTurnstileReady" async defer></script>
+</body>
+</html>
