@@ -32,7 +32,9 @@
       </div>
       <div class="field">
         <label for="plugin_name">Plugin name <span class="req">*</span></label>
-        <input id="plugin_name" name="plugin_name" type="text" maxlength="200" autocomplete="off" required placeholder="Name as shown in ChatGPT">
+        <input id="plugin_name" name="plugin_name" type="text" maxlength="200" autocomplete="off" required placeholder="Name as shown in Plugin Discovery" role="combobox" aria-haspopup="listbox" aria-controls="catalog-suggestions" aria-autocomplete="list" aria-expanded="false">
+        <div id="catalog-suggestions" class="catalog-suggestions" role="listbox" aria-label="Matching Plugin Discovery listings" hidden></div>
+        <p class="hint" id="catalog-suggestion-hint" role="status" aria-live="polite" hidden></p>
       </div>
       <div class="field">
         <label for="listing_url">Official ChatGPT listing URL or plugin ID</label>
@@ -66,6 +68,7 @@
   </footer>
 </main>
   <script src="request.js"></script>
+  <script type="module" src="request-suggest.mjs"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&amp;onload=onListingRequestTurnstileReady" async defer></script>
 </body>
 </html>

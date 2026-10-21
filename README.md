@@ -19,6 +19,10 @@ The public form is a request channel for corrections, missing listings, descript
 
 The older FormSubmit → Gmail route was replaced. FormSubmit submissions made before the change **are not migrated into D1**, and still need review in the old mailbox. The static `thanks.html` page is a legacy backward-compatibility page and is no longer a submission result.
 
+## Optional catalog-name autocomplete (staged, NOT LIVE)
+
+Draft work adds a typeahead list for requests about **existing Plugin Discovery listings** (removals, corrections, description changes). It queries only the Plugin Discovery catalog's own /suggest endpoint, never external providers. Selecting a match fills exact name and the canonical listing URL. Submissions remain possible without matching or without network service, and requests to add missing plugins remain free text. This frontend feature must not go live before private catalog data meets its release approval gate and the catalog endpoint is enabled by explicit owner review. See private catalog PR #36.
+
 ## Validation and security
 
 - Live iPhone synthetic integration case: `2eb025ac-a5a1-46e2-b112-f18b489c7ec9`
