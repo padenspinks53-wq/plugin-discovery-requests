@@ -15,7 +15,7 @@ export function validSuggestions(payload) {
   return payload.matches.slice(0,8).filter(item =>
     item && typeof item.name === 'string' && item.name.length > 0 &&
     item.name.length <= 200 &&
-    typeof item.id === 'string' && /^Plugin_[A-Za-z0-9_]{6,120}$/.test(item.id) &&
+    typeof item.id === 'string' && /^(?:Plugin_|plugin_asdk_app_|plugin_connector_1p_|plugin_templated_apps_|plugins_|plugins~Plugin_)[A-Za-z0-9_]{6,120}$/.test(item.id) &&
     item.listing_url === 'https://chatgpt.com/plugins/' + item.id
   );
 }
@@ -43,6 +43,25 @@ if (typeof document !== 'undefined') {
     if (!autoOnly && selectedUrl && reference?.value === selectedUrl) reference.value='';
     selectedUrl=null;
   }
+  function suggestionButtons() {
+    return [...suggestions.querySelectorAll('[role="option"]')];
+  }
+  function focusSuggestion(event) {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      reset(true);
+      plugin.focus();
+      return;
+    }
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    const buttons = suggestionButtons();
+    if (!buttons.length) return;
+    event.preventDefault();
+    const index = buttons.indexOf(document.activeElement);
+    if (event.key === 'ArrowDown') buttons[(index + 1) % buttons.length].focus();
+    else if (index <= 0) plugin.focus();
+    else buttons[index - 1].focus();
+  }
   function draw(items) {
     suggestions.replaceChildren();
     suggestions.hidden = items.length === 0;
@@ -52,8 +71,12 @@ if (typeof document !== 'undefined') {
       option.type='button';
       option.className='catalog-suggestion';
       option.setAttribute('role','option');
+      option.setAttribute('aria-selected','false');
       option.textContent=match.name;
       option.title='Select this existing Plugin Discovery listing';
+      option.addEventListener('focus',()=>{
+        for (const item of suggestionButtons()) item.setAttribute('aria-selected', String(item === option));
+      });
       option.addEventListener('click',()=>{
         plugin.value=match.name;
         reference.value=match.listing_url;
@@ -76,7 +99,7 @@ if (typeof document !== 'undefined') {
       });
       if (!res.ok) throw new Error('suggestions_not_ready');
       const matches=validSuggestions(await res.json());
-      if (current!==requestId || !suggestionsApply(kind.value) || plugin.value.trim()!==text) return;
+      if (current!==requestId || !suggestionsApply(kind.value) || plugin.value.trim().slice(0,64)!==text) return;
       draw(matches);
       hint.textContent=matches.length
         ? 'Select an existing listing or continue typing a name manually.'
@@ -112,8 +135,16 @@ if (typeof document !== 'undefined') {
     kind.addEventListener('change',updateMode);
     plugin.addEventListener('input',handleTyping);
     plugin.addEventListener('keydown',e=>{
-      if (e.key==='Escape') {reset(true);plugin.setAttribute('aria-expanded','false');}
+      if (e.key==='Escape') reset(true);
+      else if ((e.key==='ArrowDown' || e.key==='ArrowUp') && !suggestions.hidden) {
+        const buttons = suggestionButtons();
+        if (buttons.length) {
+          e.preventDefault();
+          buttons[e.key==='ArrowDown' ? 0 : buttons.length-1].focus();
+        }
+      }
     });
+    suggestions.addEventListener('keydown',focusSuggestion);
     form.addEventListener('reset',()=>queueMicrotask(updateMode));
     updateMode();
   }
